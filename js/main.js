@@ -655,3 +655,56 @@
   window.addEventListener('resize', reset);
   window.addEventListener('load', reset);   /* fotos e fontes podem mudar a altura dos palcos */
 })();
+
+/* Foto ampliada dos serviços (#photo-viewer, um <dialog>): o disco no
+   contorno da foto ou a própria foto (data-photo="<id da seção>") abrem a foto
+   inteira de img/service-sections/full/ numa mancha orgânica, com o rótulo e
+   o título da seção. O navegador escolhe a resolução (1920/2880/3840) pela
+   tela; a foto começa a carregar quando o mouse passa ou o dedo toca no disco.
+   Esc, o X ou um clique fora fecham, e o foco volta para o disco. */
+(function () {
+  var dlg = document.getElementById('photo-viewer');
+  var triggers = document.querySelectorAll('[data-photo]');
+  if (!dlg || typeof dlg.showModal !== 'function') {
+    /* navegador sem <dialog>: a foto fica como estava, sem o disco */
+    document.querySelectorAll('.svx-zoom').forEach(function (b) { b.remove(); });
+    return;
+  }
+  var img = dlg.querySelector('.pv-img'), avif = dlg.querySelector('source'),
+      eb = dlg.querySelector('.pv-eb'), title = dlg.querySelector('.pv-title'),
+      dir = 'img/service-sections/full/', shown = null;
+
+  function list(key, ext) {
+    return [1920, 2880, 3840].map(function (w) { return dir + key + '-' + w + '.' + ext + ' ' + w + 'w'; }).join(', ');
+  }
+  function ready() { if (img.complete && img.naturalWidth) dlg.classList.add('is-ready'); }
+  function load(key) {
+    if (shown === key) return;
+    shown = key;
+    dlg.classList.remove('is-ready');
+    avif.srcset = list(key, 'avif');
+    img.srcset = list(key, 'webp');
+    img.src = dir + key + '-1920.webp';
+  }
+  function open(key) {
+    var sec = document.getElementById(key), photo = sec && sec.querySelector('.svx-photo');
+    if (!photo) return;
+    eb.textContent = sec.querySelector('.svx-eyebrow').textContent;
+    title.innerHTML = sec.querySelector('.svx-title').innerHTML;
+    img.alt = photo.alt;
+    load(key);
+    dlg.showModal();
+    ready();
+  }
+  img.addEventListener('load', ready);
+  [].forEach.call(triggers, function (t) {
+    var key = t.dataset.photo;
+    t.addEventListener('click', function () { open(key); });
+    ['pointerenter', 'focus', 'touchstart'].forEach(function (ev) {
+      t.addEventListener(ev, function () { load(key); }, { passive: true });
+    });
+  });
+  dlg.addEventListener('click', function (e) {
+    if (e.target === dlg || e.target.closest('.pv-close')) dlg.close();
+  });
+})();

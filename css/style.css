@@ -994,6 +994,163 @@ html { scroll-padding-top: 96px; } /* âncoras param abaixo da navbar flutuante 
   .svx-r .svx-stage { padding-right: calc(432 * var(--u)); }
 }
 
+/* Foto em várias resoluções (<picture> com AVIF/WebP): o <picture> não gera
+   caixa, a foto continua posicionada pela arte como antes */
+.svx-art > picture { display: contents; }
+.svx-art .svx-photo { position: absolute; }
+
+/* Disco "ampliar" no contorno da foto (mesmo disco branco dos ícones da
+   seção Why choose): abre a foto ampliada (.pv). Fica dentro da arte (cresce e
+   aparece com ela), centrado em --cx/--cy; tamanho mínimo em px de tela (no
+   tablet e no celular a arte é ampliada por --s, aqui --art-s). Sem JS, some. */
+.svx-zoom { display: none; }
+.svx-stage { --art-s: 1; } /* escala da arte (o --s do <main> é outra coisa) */
+@media (orientation: portrait) { .svx-stage { --art-s: var(--s); } }
+.js .svx-zoom {
+  --d: max(25 * var(--u), 46px / var(--art-s));
+  display: grid;
+  place-items: center;
+  left: calc(var(--cx) * var(--u) - var(--d) / 2);
+  top: calc(var(--cy) * var(--u) - var(--d) / 2);
+  width: var(--d);
+  height: var(--d);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #17632D;
+  box-shadow: 0 6px 18px rgb(8 46 32 / .2);
+  cursor: zoom-in;
+  pointer-events: auto;
+  transition: scale .3s var(--ease), background-color .3s var(--ease);
+}
+.svx-zoom svg { width: 44%; height: 44%; }
+.js .svx-photo[data-photo] { pointer-events: auto; cursor: zoom-in; }
+.svx-zoom:hover, .svx-art:has(.svx-photo:hover) .svx-zoom { scale: 1.08; background: #EEF7E2; }
+.svx-zoom:focus-visible { outline: 3px solid #123E24; outline-offset: 3px; }
+
+/* ---------- Foto ampliada (.pv, um <dialog>) ----------
+   A foto inteira numa mancha orgânica, como as das seções: recorte #pv-clip
+   (topo e base em ondas, laterais em arco) e, atrás, a mancha verde (.pv-blob)
+   que engrossa e afina; folhas soltas e o fundo verde-claro do site. O tamanho
+   tem teto (1100 px de largura) para a foto continuar nítida. Na tela em pé
+   (celular e tablet) a mancha fica mais alta (4:5) e mostra o centro da foto. */
+.pv {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 24px;
+  border: 0;
+  background: radial-gradient(60% 55% at 50% 42%, rgb(246 252 238 / .85), transparent 72%);
+  overflow: hidden;
+}
+.pv[open] { display: grid; place-content: center; justify-items: center; }
+.pv::backdrop { background: rgb(213 232 192 / .97); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+html:has(.pv[open]) { overflow: hidden; } /* a página para de rolar por trás */
+.pv-art {
+  --pw: min(84vw, 1100px, (100dvh - 290px) * 16 / 9);
+  --u: calc(var(--pw) / 1100); /* unidade da arte (folhas) */
+  position: relative;
+  width: var(--pw);
+  aspect-ratio: 16 / 9;
+}
+.pv-blob {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: #58A927;
+  filter: drop-shadow(0 calc(14 * var(--u)) calc(26 * var(--u)) rgb(8 46 32 / .18));
+}
+.pv-tall { display: none; }
+.pv-photo {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#pv-clip);
+  background: #C4DFA6; /* enquanto a foto chega */
+}
+.pv-photo > picture { display: contents; }
+.pv-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+}
+.pv.is-ready .pv-img { opacity: 1; }
+.pv-leaf {
+  position: absolute;
+  width: calc(76 * var(--u));
+  pointer-events: none;
+  filter: drop-shadow(0 calc(6 * var(--u)) calc(8 * var(--u)) rgb(18 58 35 / .16));
+}
+.pv-leaf-1 { left: calc(-16 * var(--u)); top: calc(-30 * var(--u)); rotate: -32deg; }
+.pv-leaf-2 { right: calc(-12 * var(--u)); bottom: calc(-34 * var(--u)); width: calc(58 * var(--u)); rotate: 150deg; }
+.pv-cap { margin-top: 30px; max-width: min(84vw, 760px); text-align: center; }
+.pv-eb {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #0C3828;
+}
+.pv-title {
+  margin: 8px 0 0;
+  font-size: clamp(26px, 2.5vw, 38px);
+  font-weight: 700;
+  line-height: 1.07;
+  letter-spacing: -.01em;
+  color: #0C3828;
+  text-wrap: balance;
+}
+.pv-title em { font-size: 1.16em; }
+.pv-close {
+  position: fixed;
+  top: clamp(14px, 2.2vw, 28px);
+  right: clamp(14px, 2.2vw, 28px);
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--btn);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color .3s var(--ease);
+}
+.pv-close svg { width: 20px; height: 20px; transition: transform .3s var(--ease); }
+.pv-close:hover { background: var(--btn-hover); }
+.pv-close:hover svg { transform: rotate(90deg); }
+.pv-close:focus-visible { outline: 3px solid #123E24; outline-offset: 3px; }
+@media (orientation: portrait) {
+  .pv-art { --pw: min(82vw, (100dvh - 230px) * 4 / 5); --u: calc(var(--pw) / 600); aspect-ratio: 4 / 5; }
+  .pv-wide { display: none; }
+  .pv-tall { display: block; }
+}
+@media (orientation: portrait) and (max-width: 640px) { .pv-title { font-size: 25px; } }
+@media (prefers-reduced-motion: no-preference) {
+  /* a mancha infla e a foto aparece, como nas seções; o texto sobe depois */
+  .pv[open] .pv-art { animation: pv-in .55s var(--ease) both; }
+  .pv[open] .pv-cap { animation: pv-up .55s var(--ease) .12s both; }
+  .pv[open]::backdrop { animation: pv-fade .35s ease both; }
+  .pv-leaf { --dx: 4; animation: leaf-float 7s ease-in-out infinite alternate; }
+  .pv-leaf-2 { --dx: -3; animation-duration: 8.2s; animation-delay: -3s; }
+  @keyframes pv-in { from { opacity: 0; scale: .9; } }
+  @keyframes pv-up { from { opacity: 0; translate: 0 14px; } }
+  @keyframes pv-fade { from { opacity: 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .svx-zoom, .pv-img, .pv-close, .pv-close svg { transition: none; }
+}
+
 /* ---------- Seasonal Care ----------
    Kit silverhand-estacoes-elementos. Mesmo esquema de palco; textura creme
    do kit fora (fundo verde do site), folhas com o .leaf da hero. */
