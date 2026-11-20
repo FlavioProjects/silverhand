@@ -18,7 +18,6 @@ Site estático (HTML, CSS e JS puros, sem build) publicado no **Cloudflare Pages
 | `img/work/` | Fotos da galeria "Our work" em vários tamanhos (`<foto>-<largura>.webp`, 16:9) |
 | `img/seasons/` | Fotos dos cartões de estação em vários tamanhos (`season-<estação>-<largura>.webp`, 16:9) |
 | `img/final/` | Mapa da área atendida, em `desktop/`, `tablet/` e `mobile/` |
-| `fotos-originais/` | Fotos originais em alta resolução (WebP) de onde saem as de `img/service-sections/`, `img/work/` e `img/seasons/`. Não são usadas pelo site |
 | `img/icons/` | Favicon PNG e ícones do Android (`site.webmanifest`) |
 | `img/og-logo.jpg` | Imagem de compartilhamento (1200×630) |
 | `fonts/` | DM Sans e DM Serif Display, servidas pelo próprio site (os `OFL-*.txt` são as licenças, obrigatórias junto das fontes) |
