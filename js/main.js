@@ -482,6 +482,7 @@
     var parts = [p], m = p.nextElementSibling, g = m && m.nextElementSibling;
     if (m && m.tagName.toLowerCase() === 'mask' && g && g.classList.contains('green-in')) parts.push(m, g);
     var clone = svg.cloneNode(false);
+    clone.setAttribute('data-ghost', '');   /* o movimento com o scroll (fim do arquivo) redesenha a cópia junto */
     clone.setAttribute('viewBox', [vb.x + l / sx, vb.y + t / sy, (rr - l) / sx, (bb - t) / sy].join(' '));
     /* posição e tamanho em % do palco (não em px): se a largura mudar durante
        o efeito (a barra de rolagem aparecendo, o celular girando), a cópia
@@ -490,7 +491,7 @@
     clone.style.cssText += ';position:absolute;inset:auto;overflow:visible;pointer-events:none;' +
       'left:' + pct(box.left - pb.left + l, pb.width) + ';top:' + pct(box.top - pb.top + t, pb.height) +
       ';width:' + pct(rr - l, pb.width) + ';height:' + pct(bb - t, pb.height) + ';' +
-      'z-index:' + getComputedStyle(svg).zIndex + ';will-change:opacity,transform;transform:none';
+      'z-index:' + getComputedStyle(svg).zIndex + ';will-change:opacity,transform';
     var defs = svg.querySelector('defs'); if (defs) clone.appendChild(defs.cloneNode(true));
     var host = clone;
     if (p.parentNode !== svg) { host = p.parentNode.cloneNode(false); clone.appendChild(host); }
@@ -656,33 +657,225 @@
   window.addEventListener('load', reset);   /* fotos e fontes podem mudar a altura dos palcos */
 })();
 
-/* Manchas da hero com o scroll: --hp vai de 0 (topo) a 1 (hero saindo da
-   tela) e desliza até o alvo, então a rodinha do mouse não dá trancos. O
-   movimento em si está no style.css (.hero-green). */
+/* Manchas verdes com o scroll (hero, estações e "our work"; desktop, tablet
+   e celular). Cada mancha sobe, gira e cresce em torno do canto ou da borda
+   em que está presa, mas o <svg> não se move: o contorno é redesenhado.
+   O giro + crescimento + subida é aplicado em duas passadas, primeiro na
+   horizontal (cada linha do palco continua nela mesma) e depois na vertical
+   (idem para cada coluna); em cada passada as bordas do palco perto da
+   mancha ficam fixas e o movimento em direção a elas é amortecido sem nunca
+   inverter a ordem dos pontos. Resultado: o que encosta numa borda só
+   desliza ao longo dela (não descola nem passa dela), o que não encosta
+   nunca chega lá (as manchas das estações continuam fechando arredondadas
+   antes das emendas) e o contorno nunca se dobra. Longe das bordas é o
+   giro + crescimento exato. Contorno, borda clara (máscara) e miolo escuro
+   recebem o mesmo desenho, e os prolongamentos do traço da máscara, que
+   saem da tela, são refeitos na direção da tangente: a borda clara segue
+   com a mesma largura até a borda da tela. A onda grande da hero no desktop
+   passa das bordas por todos os lados e se move inteira.
+   Progresso: na hero, 0 no topo → 1 quando ela sai da tela; nas outras, −1
+   com a mancha entrando por baixo → 0 com ela no meio da tela → 1 saindo por
+   cima. O valor mostrado desliza até o alvo (sem trancos da rodinha). */
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var hero = document.querySelector('.hero');
-  var svgs = [].slice.call(document.querySelectorAll('.hero-green'));
-  if (!hero || !svgs.length) return;
-  var cur = 0, target = 0, last = 0, running = false;
-  function measure() {
-    var h = hero.offsetHeight || window.innerHeight;
-    target = Math.max(0, Math.min(1, window.scrollY / h));
+
+  /* por máscara (id no index.html), valores no fim do efeito (progresso 1;
+     no −1 é o contrário): o = ponto fixo do giro e do crescimento (px de
+     canvas), r = giro em graus (+ = horário), s = escala (ou sx/sy, largura
+     e altura separadas; nas faixas que cruzam a tela só sy), t = deslocamento */
+  var CFG = {
+    /* hero, desktop: onda grande e mancha do canto esquerdo */
+    'in-1': { o: [1672, 0], r: -10, s: 1.25, t: [-134, -282], free: true },
+    'in-2': { o: [0, 0], r: 16, s: 1.6 },
+    /* hero, tablet: cantos de cima e faixa atrás da foto */
+    'in-3': { o: [0, 0], r: 16, s: 1.6 },
+    'in-4': { o: [1086, 0], r: -16, s: 1.5 },
+    'in-5': { o: [543, 900], r: -8, sy: 1.2, t: [0, -400] },
+    /* hero, celular */
+    'in-6': { o: [0, 0], r: 16, s: 1.6 },
+    'in-7': { o: [941, 0], r: -16, s: 1.5 },
+    'in-8': { o: [470, 1050], r: -8, sy: 1.2, t: [0, -420] },
+    /* estações: desktop (direita, esquerda), tablet (idem), celular (faixa).
+       Crescem mais para fora da borda (sx) do que na altura: sobra espaço
+       até as emendas de cima e de baixo */
+    'in-9': { o: [1672, 500], r: 8, sx: 1.3, sy: 1.05, t: [0, -40] },
+    'in-10': { o: [0, 815], r: -12, sx: 1.5, sy: 1.1, t: [0, -30] },
+    'in-11': { o: [1086, 915], r: 8, sx: 1.3, sy: 1.05, t: [0, -50] },
+    'in-12': { o: [0, 1230], r: -12, sx: 1.5, sy: 1.1, t: [0, -30] },
+    'in-13': { o: [470, 1180], r: -7, sy: 1.15, t: [0, -100] },
+    /* our work: meia-lua na borda direita (desktop, tablet, celular), que
+       sai da borda ao entrar na tela */
+    'in-14': { o: [1672, 855], r: 12, sx: 1.6, sy: 1.15, t: [0, -60] },
+    'in-17': { o: [1086, 1165], r: 12, sx: 1.6, sy: 1.15, t: [0, -50] },
+    'in-19': { o: [941, 1360], r: 12, sx: 1.6, sy: 1.15, t: [0, -50] }
+  };
+  var EDGE = 90;    /* largura mínima (px de canvas) da faixa junto da borda em que o movimento vai a zero */
+  var REACH = .3;   /* bordas a até 30% do palco da mancha ficam fixas (as outras estão longe demais para importar) */
+
+  /* "M x y L x y C x y, x y, x y Z" → [{c, p: [[x, y], …]}] (só absolutos) */
+  function parse(d) {
+    var segs = [], re = /([MLCZ])|(-?\d*\.?\d+)/g, m, cur, n = [];
+    while ((m = re.exec(d))) {
+      if (m[1]) { cur = { c: m[1], p: [] }; segs.push(cur); }
+      else if (n.push(+m[2]) === 2) { cur.p.push(n); n = []; }
+    }
+    return segs;
   }
-  function paint() { svgs.forEach(function (s) { s.style.setProperty('--hp', cur.toFixed(4)); }); }
+  function str(segs) {
+    return segs.map(function (s) {
+      return s.c + s.p.map(function (q) { return ' ' + Math.round(q[0] * 10) / 10 + ' ' + Math.round(q[1] * 10) / 10; }).join('');
+    }).join(' ');
+  }
+  function same(a, b) { return a[0] === b[0] && a[1] === b[1]; }
+  function len(a, b) { return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
+
+  /* prolongamentos do traço da máscara: "M fora L borda C …" e "… C L fora".
+     Guarda onde estão, o ponto da borda, o vizinho que dá a tangente e o comprimento. */
+  function exts(segs) {
+    var out = [];
+    function near(list, a) {   /* primeiro ponto da lista diferente do da borda */
+      for (var i = 0; i < list.length; i++) if (!same(segs[list[i][0]].p[list[i][1]], a)) return list[i];
+      return list[list.length - 1];
+    }
+    segs.forEach(function (s, i) {
+      var nx = segs[i + 1], pv = segs[i - 1];
+      if (s.c === 'M' && nx && nx.c === 'L' && segs[i + 2] && segs[i + 2].c === 'C') {
+        out.push({ e: [i, 0], a: [i + 1, 0], n: near([[i + 2, 0], [i + 2, 1], [i + 2, 2]], nx.p[0]), l: len(s.p[0], nx.p[0]) });
+      }
+      if (s.c === 'L' && pv && pv.c === 'C' && (!nx || nx.c === 'M')) {
+        var back = [[i - 1, 1], [i - 1, 0]];
+        if (segs[i - 2]) back.push([i - 2, segs[i - 2].p.length - 1]);
+        out.push({ e: [i, 0], a: [i - 1, 2], n: near(back, pv.p[2]), l: len(s.p[0], pv.p[2]) });
+      }
+    });
+    return out;
+  }
+
+  /* Uma passada (1D): leva v para a·v + b (a > 0), mas mantém fixas as
+     bordas e0/e1 marcadas (f0/f1). Perto de cada uma, a diferença até a·v + b
+     some numa rampa suave (1 − smoothstep); se o movimento é em direção à
+     borda a rampa se alarga o bastante para a inclinação nunca ficar negativa
+     (a ordem dos pontos se mantém). Além da borda segue reto. */
+  function ramp(u) { return u >= 1 ? 0 : (1 - u) * (1 - u) * (1 + 2 * u); }
+  function warp(v, a, b, e0, e1, f0, f1) {
+    var C0 = f0 ? a * e0 + b - e0 : 0, C1 = f1 ? a * e1 + b - e1 : 0;
+    var m0 = Math.max(EDGE, -1.65 * C0 / a), m1 = Math.max(EDGE, 1.65 * C1 / a), span = e1 - e0;
+    if (f0 && f1 && m0 + m1 > .95 * span) { var q = .95 * span / (m0 + m1); m0 *= q; m1 *= q; }
+    if (f0 && v <= e0) return e0 + (v - e0) * a;
+    if (f1 && v >= e1) return e1 + (v - e1) * a;
+    var out = a * v + b;
+    if (f0) out -= C0 * ramp((v - e0) / m0);
+    if (f1) out -= C1 * ramp((e1 - v) / m1);
+    return out;
+  }
+
+  var blobs = [];
+  var masks = [].slice.call(document.querySelectorAll('mask[id]'));
+  masks.forEach(function (mask) {
+    var c = CFG[mask.id], svg = mask.ownerSVGElement;
+    if (!c || !svg || svg.hasAttribute('data-ghost')) return;
+    var shape = parse(mask.previousElementSibling.getAttribute('d'));
+    var stroke = parse(mask.querySelector('path[stroke]').getAttribute('d'));
+    var xs = [], ys = [];
+    shape.forEach(function (s) { s.p.forEach(function (q) { xs.push(q[0]); ys.push(q[1]); }); });
+    var b = {
+      c: c, svg: svg, W: svg.viewBox.baseVal.width, H: svg.viewBox.baseVal.height,
+      group: mask.parentNode !== svg ? mask.parentNode : null, gy: 0,
+      hero: svg.classList.contains('hero-green'),
+      x0: Math.min.apply(null, xs), x1: Math.max.apply(null, xs),
+      y0: Math.min.apply(null, ys), y1: Math.max.apply(null, ys),
+      lo: Math.min.apply(null, ys), hi: Math.max.apply(null, ys),   /* faixa vertical do desenho atual */
+      shape: shape, stroke: stroke, ext: exts(stroke),
+      out: [], on: false, vis: true, cur: 0, target: 0, drawn: 0
+    };
+    /* a original e a cópia da animação de entrada (mesmo id), se houver */
+    masks.forEach(function (m) {
+      if (m.id !== mask.id) return;
+      var g = m.nextElementSibling;
+      b.out.push([m.previousElementSibling, m.firstElementChild, m.querySelector('path[stroke]'), g && g.firstElementChild]);
+    });
+    blobs.push(b);
+  });
+  if (!blobs.length) return;
+
+  function draw(b) {
+    var c = b.c, k = b.cur, a = (c.r || 0) * k * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a), tn = sn / cs;
+    var sx = 1 + ((c.sx || c.s || 1) - 1) * k, sy = 1 + ((c.sy || c.s || 1) - 1) * k;
+    var ox = c.o[0], oy = c.o[1], tx = c.t ? c.t[0] * k : 0, ty = c.t ? c.t[1] * k : 0;
+    var W = b.W, H = b.H, top = -b.gy, bot = H - b.gy;   /* a faixa da hero está num grupo deslocado para baixo */
+    var fl = !c.free && b.x0 < REACH * W, fr = !c.free && W - b.x1 < REACH * W;
+    var ft = !c.free && b.y0 - top < REACH * H, fb = !c.free && bot - b.y1 < REACH * H;
+    var ax = cs * sx, ay = sy / cs;
+    /* T(p) = o + t + R·S·(p − o) em duas passadas: x' = T.x(x, y) e depois
+       y' = T.y com o x original reescrito a partir de x':
+       y' = oy + ty + tg·(x' − ox − tx) + sy/cos·(y − oy) */
+    function f(q) {
+      var x = q[0], y = q[1];
+      var X = warp(x, ax, ox + tx - ax * ox - sn * sy * (y - oy), 0, W, fl, fr);
+      return [X, warp(y, ay, oy + ty + tn * (X - ox - tx) - ay * oy, top, bot, ft, fb)];
+    }
+    function map(segs) { return segs.map(function (s) { return { c: s.c, p: s.p.map(f) }; }); }
+    var shape = map(b.shape), stroke = map(b.stroke), lo = Infinity, hi = -Infinity;
+    shape.forEach(function (s) { s.p.forEach(function (q) { if (q[1] < lo) lo = q[1]; if (q[1] > hi) hi = q[1]; }); });
+    b.lo = lo; b.hi = hi;
+    b.ext.forEach(function (e) {
+      var A = stroke[e.a[0]].p[e.a[1]], N = stroke[e.n[0]].p[e.n[1]], d = len(A, N) || 1;
+      stroke[e.e[0]].p[e.e[1]] = [A[0] + (A[0] - N[0]) / d * e.l, A[1] + (A[1] - N[1]) / d * e.l];
+    });
+    var ds = str(shape), dm = str(stroke);
+    b.out.forEach(function (o) {
+      if (!o[0].isConnected) return;   /* cópia da entrada já removida */
+      o[0].setAttribute('d', ds); o[1].setAttribute('d', ds); o[2].setAttribute('d', dm);
+      if (o[3]) o[3].setAttribute('d', ds);
+    });
+    b.drawn = k;
+  }
+
+  var hero = document.querySelector('.hero');
+  function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+  /* alvo de cada mancha e se ela está perto da tela (a que está longe não é
+     redesenhada; volta a ser quando se aproxima, já na posição certa) */
+  function targets() {
+    var vh = window.innerHeight, hr = hero && hero.getBoundingClientRect();
+    var hk = hr && hr.height ? clamp(-hr.top / hr.height, 0, 1) : 0;
+    blobs.forEach(function (b) {
+      if (!b.on) return;
+      var r = b.svg.getBoundingClientRect(), sc = r.height / b.H, y0 = b.y0 + b.gy, y1 = b.y1 + b.gy;
+      var top = r.top + y0 * sc, bot = r.top + y1 * sc;
+      b.target = b.hero ? hk : clamp((vh / 2 - (top + bot) / 2) / (vh / 2 + (bot - top) / 2), -1, 1);
+      var lo = Math.min(y0, b.lo + b.gy), hi = Math.max(y1, b.hi + b.gy);
+      b.vis = r.top + hi * sc > -vh / 4 && r.top + lo * sc < vh * 1.25;
+    });
+  }
+
+  var running = false, last = 0;
   function frame(now) {
     var dt = Math.min(64, now - (last || now)); last = now;
-    var d = target - cur;
-    if (Math.abs(d) < .0005) { cur = target; paint(); running = false; last = 0; return; }
-    cur += d * (1 - Math.exp(-dt / 180));   /* ~180 ms de folga: bem macio */
-    paint();
-    requestAnimationFrame(frame);
+    var e = 1 - Math.exp(-dt / 180), moving = false;
+    blobs.forEach(function (b) {
+      if (!b.on) return;
+      var d = b.target - b.cur;
+      if (Math.abs(d) < .0005) b.cur = b.target; else { b.cur += d * e; moving = true; }
+      if (b.cur !== b.drawn && b.vis) draw(b);
+    });
+    if (moving) requestAnimationFrame(frame); else { running = false; last = 0; }
   }
-  function kick() {
-    measure();
-    if (!running && target !== cur) { running = true; requestAnimationFrame(frame); }
+  function kick() { targets(); if (!running) { running = true; requestAnimationFrame(frame); } }
+
+  /* qual versão está na tela (desktop/tablet/celular) e o deslocamento da
+     faixa da hero; quem acabou de aparecer já entra na posição certa */
+  function layout() {
+    blobs.forEach(function (b) {
+      var on = getComputedStyle(b.svg).display !== 'none';
+      b.fresh = on && !b.on; b.on = on;
+      if (b.group) { try { b.gy = new DOMMatrix(getComputedStyle(b.group).transform).f || 0; } catch (err) { b.gy = 0; } }
+    });
+    targets();
+    blobs.forEach(function (b) { if (b.fresh) { b.cur = b.target; if (b.cur !== b.drawn) draw(b); } });
+    kick();
   }
-  measure(); cur = target; paint();
+  layout();
   window.addEventListener('scroll', kick, { passive: true });
-  window.addEventListener('resize', kick);
+  window.addEventListener('resize', layout);
+  window.addEventListener('load', layout);
 })();
