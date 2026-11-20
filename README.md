@@ -54,8 +54,9 @@ Depois abrir <http://localhost:8000>.
 
 | Onde | O quê |
 |---|---|
+| Títulos da home | O `<h1>` é o rótulo pequeno da hero ("Lawn care & landscaping in Silver Spring, MD") e cada serviço tem o nome dele como `<h2>` ("Lawn Care & Mowing"...). Os slogans grandes são `<p>` com as mesmas classes, então o visual não muda. Manter assim: é o que o Google lê como assunto da página |
 | `<head>` de cada página | `<title>` (até ~60 caracteres), `meta description` (até ~155), `robots`, canônico, Open Graph e Twitter |
-| `index.html`, JSON-LD | Site, página (cada seção com o link `#âncora` dela), empresa local, serviços e FAQ |
+| `index.html`, JSON-LD | Site, página (cada seção com o link `#âncora` dela), empresa local (com as fotos reais), serviços (cada um com foto e área atendida) e FAQ. Validar depois de mudar: um erro de vírgula derruba o bloco inteiro |
 | `privacy.html`, JSON-LD | Página e trilha (Home › Privacy Policy) |
 | `404.html` | `noindex` (também no `_headers`) |
 | `robots.txt` | Libera tudo e aponta para o sitemap |

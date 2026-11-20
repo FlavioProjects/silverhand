@@ -92,7 +92,7 @@ html {
 
 /* Títulos: DM Sans bold + uma palavra-chave em DM Serif Display
    itálico, no verde das folhas (--leaf-dark), o mesmo em todos os títulos. */
-:is(h1, h2) em {
+:is(h1, h2, .hero-title, .svx-title) em { /* o slogan da hero e dos serviços é <p> (o título de verdade é o rótulo acima) */
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
@@ -501,7 +501,7 @@ html { scroll-padding-top: 96px; } /* âncoras param abaixo da navbar flutuante 
     --hdy: 75;
     --brand-x: 92; --brand-y: 72; --brand-w: 378;
     --copy-x: 100;
-    --loc-y: 256;  --loc-fs: 26;
+    --loc-y: 256;  --loc-fs: 23.5; /* rótulo-h1 mais longo: cabe na largura do celular */
     --h1-y: 306;   --h1-fs: 81;  --h1-lh: 80;
     --desc-y: 495; --desc-fs: 42.6; --desc-lh: 48;
     --photo-x: 125; --photo-y: 700; --photo-w: 690;  /* menor e mais baixo: não encosta no texto */

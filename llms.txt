@@ -18,6 +18,10 @@ The website is a single page in English. Each part of the page has its own ancho
 - [Why choose Silver Hand and how it works](https://silverhandlandscaping.com/#work): Same crew at your property, a text before we arrive, price agreed up front. Three steps: send the request, we come and price it, pick a day and we begin.
 - [Book a free visit](https://silverhandlandscaping.com/#book): Form with name, phone, property address and the service wanted.
 
+## Photos
+
+The page shows real photos of the company's work in Silver Spring: striped lawns, a garden pond with mulch beds, azalea beds, shaped shrubs and seasonal yard care (spring planting, summer lawns, fall leaf cleanup, cleared winter walkways).
+
 ## Service area and questions
 
 - [Service area](https://silverhandlandscaping.com/#service-area): Silver Spring and nearby areas in Montgomery County, Maryland.
