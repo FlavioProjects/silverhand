@@ -1,0 +1,28 @@
+# Silver Hand Home & Landscaping
+
+> Local lawn care and landscaping company serving Silver Spring and nearby areas of Montgomery County, Maryland (USA). Services: lawn care and mowing, landscaping, seasonal yard care, power washing, car washing and home cleaning. The same crew comes to the property every visit, customers get a text before the crew arrives, and the price is agreed up front after a free visit.
+
+The website is a single page in English. Each part of the page has its own anchor link, listed below. To get a quote, people book a free visit with the form on the page; the crew comes by, walks the property and gives a clear plan and price.
+
+## Services
+
+- [Lawn care & mowing](https://silverhandlandscaping.com/#lawn-care-mowing): Recurring mowing on a regular schedule, with the same crew every visit and a yard that looks great week after week.
+- [Landscaping](https://silverhandlandscaping.com/#landscaping): A yard that feels like home. Thoughtful planting, fresh mulch and tidy garden beds, season after season.
+- [Seasonal yard care](https://silverhandlandscaping.com/#seasonal-care): Spring cleanups, fresh mulch and new growth; summer mowing and landscape maintenance; fall leaf removal and property protection; winter care to keep the property clean and safe.
+- [Power washing](https://silverhandlandscaping.com/#power-washing): A fresh start for every surface. Washes away built-up dirt from patios, walkways and driveways.
+- [Car washing](https://silverhandlandscaping.com/#car-washing): A cleaner car, a brighter day. A thorough exterior wash with simple scheduling and attention to every detail.
+- [Home cleaning](https://silverhandlandscaping.com/#home-cleaning): Come home to a little more calm. Fresh rooms and clean surfaces, so you can enjoy your space.
+
+## How it works
+
+- [Why choose Silver Hand and how it works](https://silverhandlandscaping.com/#work): Same crew at your property, a text before we arrive, price agreed up front. Three steps: send the request, we come and price it, pick a day and we begin.
+- [Book a free visit](https://silverhandlandscaping.com/#book): Form with name, phone, property address and the service wanted.
+
+## Service area and questions
+
+- [Service area](https://silverhandlandscaping.com/#service-area): Silver Spring and nearby areas in Montgomery County, Maryland.
+- [FAQ](https://silverhandlandscaping.com/#faq): Areas served; how to get a quote (book a free visit, price agreed up front); recurring service (yes, mowing and landscape maintenance on a regular schedule with the same crew); bad weather (if rain or storms make it unsafe, we text you and move the visit to the next open day).
+
+## Optional
+
+- [Privacy Policy](https://silverhandlandscaping.com/privacy): How the information shared in the booking form, calls and texts is collected, used and protected.
