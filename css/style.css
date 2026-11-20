@@ -1428,7 +1428,7 @@ select.fin-field:valid { color: #0B2118; }
    por --ox) e esmaece nas pontas; a faixa começa uma cópia à esquerda das
    posições originais e anda exatamente uma cópia (--set, em px de canvas). */
 .cmb-stage > .cmb-carousel {
-  --set: calc(3 * (var(--pw) + var(--pg)));
+  --set: calc(4 * (var(--pw) + var(--pg))); /* 4 fotos por cópia */
   --pad: 40;
   left: calc(-1 * var(--ox)); width: 100cqw;
   top: calc((var(--y) - var(--pad)) * var(--u));
@@ -1519,7 +1519,7 @@ select.fin-field:valid { color: #0B2118; }
   .cmb-stage .cmb-p-h { --x: 133; --y: 980; --fs: 59; --lh: 62; }
   .cmb-stage .cmb-b-h { --y: 527; --w: 1000; --fs: 59; --lh: 64; }
   .cmb-stage .cmb-b-body { --y: 667; --w: 760; --fs: 26; --lh: 34; }
-  .cmb-stage .cmb-carousel { --x0: 132; --y: 112; --pw: 460; --pg: 17; --h: 266; --dur: 36s; }
+  .cmb-stage .cmb-carousel { --x0: 132; --y: 112; --pw: 460; --pg: 17; --h: 266; --dur: 48s; }
   .cmb-stage .cmb-div1 { --y: 435; --x0: 0; --x1: 1672; --cx: 836; }
   .cmb-stage .cmb-div2 { --y: 931; --x0: 0; --x1: 1672; --cx: 836; }
   .cmb-stage .cmb-item:nth-of-type(1) { --cx: 425; --cy: 820; --lx: 490; --ly: 791; --lw: 250; --lfs: 23; --llh: 29; --ta: left; }
@@ -1540,7 +1540,7 @@ select.fin-field:valid { color: #0B2118; }
   .cmb-stage .cmb-p-h { --x: 101; --y: 1164; --fs: 53.3; --lh: 56; }
   .cmb-stage .cmb-b-h { --y: 644; --w: 960; --fs: 46; --lh: 54; }
   .cmb-stage .cmb-b-body { --y: 768; --w: 780; --fs: 26; --lh: 34; }
-  .cmb-stage .cmb-carousel { --x0: 39; --y: 209; --pw: 325; --pg: 18; --h: 294; --dur: 30s; }
+  .cmb-stage .cmb-carousel { --x0: 39; --y: 209; --pw: 325; --pg: 18; --h: 294; --dur: 40s; }
   .cmb-stage .cmb-div1 { --y: 548; --x0: 24; --x1: 1062; --cx: 543; }
   .cmb-stage .cmb-div2 { --y: 1072; --x0: 24; --x1: 1062; --cx: 543; }
   .cmb-stage .cmb-item:nth-of-type(1) { --cx: 293; --cy: 913; --lx: 183; --ly: 972; --lw: 220; --lfs: 22; --llh: 28; --ta: center; }
@@ -1562,7 +1562,7 @@ select.fin-field:valid { color: #0B2118; }
   .cmb-stage .cmb-p-h { --x: 60; --y: 1435; --fs: 60; --lh: 66; }
   .cmb-stage .cmb-b-h { --x: 60; --y: 672; --w: 820; --fs: 63; --lh: 70; }
   .cmb-stage .cmb-b-body { --x: 60; --y: 902; --w: 820; --fs: 37; --lh: 50; }
-  .cmb-stage .cmb-carousel { --x0: 38; --y: 255; --pw: 280; --pg: 13; --h: 265; --dur: 26s; }
+  .cmb-stage .cmb-carousel { --x0: 38; --y: 255; --pw: 280; --pg: 13; --h: 265; --dur: 35s; }
   .cmb-stage .cmb-div1 { --y: 570; --x0: 24; --x1: 917; --cx: 470; }
   .cmb-stage .cmb-div2 { --y: 1345; --x0: 24; --x1: 917; --cx: 470; }
   .cmb-stage .cmb-item:nth-of-type(1) { --cx: 170; --cy: 1125; --lx: 25; --ly: 1197; --lw: 290; --lfs: 34; --llh: 42; --ta: center; }

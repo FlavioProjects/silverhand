@@ -14,8 +14,10 @@ Site estático (HTML, CSS e JS puros, sem build) publicado no **Cloudflare Pages
 | `js/main.js` | Menu, animações, galeria e validação do formulário |
 | `img/hero/` | Folha flutuante da hero e das seções (um recorte repetido) |
 | `img/logo/` | Símbolo e logotipo (claro e escuro) |
-| `img/service-sections/` | Foto (recortada no formato da mancha) e folha de cada seção de serviço |
-| `img/seasons/`, `img/work/`, `img/final/` | Fotos das estações, da galeria e da seção final, em `desktop/`, `tablet/` e `mobile/` |
+| `img/service-sections/` | Foto de cada seção de serviço em vários tamanhos (`<serviço>-<largura>.webp`, escolhida pelo `srcset`; o formato da mancha vem do `clip-path`) e as folhas |
+| `img/work/` | Fotos da galeria "Our work" em vários tamanhos (`<foto>-<largura>.webp`, 16:9) |
+| `img/seasons/`, `img/final/` | Fotos das estações e mapa da área atendida, em `desktop/`, `tablet/` e `mobile/` |
+| `fotos-originais/` | Fotos originais em alta resolução (WebP) de onde saem as de `img/service-sections/` e `img/work/`. Não são usadas pelo site |
 | `img/icons/` | Favicon PNG e ícones do Android (`site.webmanifest`) |
 | `img/og-logo.jpg` | Imagem de compartilhamento (1200×630) |
 | `fonts/` | DM Sans e DM Serif Display, servidas pelo próprio site (os `OFL-*.txt` são as licenças, obrigatórias junto das fontes) |
