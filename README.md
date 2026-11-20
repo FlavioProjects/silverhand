@@ -12,6 +12,7 @@ Site estático (HTML, CSS e JS puros, sem build) publicado no **Cloudflare Pages
 | `css/style.css` | Estilos do site |
 | `css/legal.css` | Estilos das páginas de texto (privacy e 404) |
 | `js/main.js` | Menu, animações, galeria e validação do formulário |
+| `js/legal.js` | `privacy.html`: marca no índice lateral a seção que está sendo lida |
 | `img/hero/` | Folha flutuante da hero e das seções (um recorte repetido) |
 | `img/logo/` | Símbolo e logotipo (claro e escuro) |
 | `img/service-sections/` | Foto de cada seção de serviço em vários tamanhos (`<serviço>-<largura>.webp`, escolhida pelo `srcset`; o formato da mancha vem do `clip-path`) e as folhas |
@@ -29,7 +30,7 @@ Site estático (HTML, CSS e JS puros, sem build) publicado no **Cloudflare Pages
 
 ## Ao mudar CSS ou JS: trocar a versão
 
-O navegador guarda `css/style.css`, `css/legal.css` e `js/main.js` por 1 dia
+O navegador guarda `css/style.css`, `css/legal.css`, `js/main.js` e `js/legal.js` por 1 dia
 (`_headers`). Para quem já visitou o site receber a versão nova na hora, esses
 arquivos são chamados com `?v=` e a data, nas três páginas. A cada mudança
 neles, trocar a versão de uma vez:

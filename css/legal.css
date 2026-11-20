@@ -88,3 +88,150 @@ html:has(body.legal) { scroll-padding-top: 110px; }
   .legal-404-links a:hover { background: var(--btn); color: #fff; }
   .legal-404-links .legal-404-cta:hover { background: var(--btn-hover); }
 }
+
+/* ---------- privacy.html ----------
+   Faixa verde-floresta no topo (a mesma do rodapé do site), três cartões
+   "em resumo" sobrepostos à faixa, e o texto em cartões numerados com o
+   disco verde dos passos de "How it works" da home. No desktop o índice
+   fica fixo à esquerda e marca a seção lida (js/legal.js). */
+body.legal-pv {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(70vw 50vw at 0% 30%, rgb(246 252 238 / .9), transparent 70%),
+    radial-gradient(60vw 45vw at 100% 55%, rgb(230 240 178 / .7), transparent 70%),
+    radial-gradient(70vw 50vw at 10% 90%, rgb(166 204 128 / .6), transparent 70%);
+}
+html:has(body.legal-pv) { scroll-behavior: smooth; scroll-padding-top: 100px; }
+@media (prefers-reduced-motion: reduce) { html:has(body.legal-pv) { scroll-behavior: auto; } }
+.legal-pv .legal-bar { top: 14px; margin-bottom: -72px; } /* a barra flutua sobre a faixa verde */
+main.pv { background: none; color: #33413A; font-size: 17px; line-height: 1.65; }
+
+.pv-hero {
+  position: relative; overflow: hidden;
+  margin: 0 auto; padding: 140px 24px 120px;
+  border-radius: 0 0 48px 48px;
+  background:
+    radial-gradient(60% 90% at 85% 0%, rgb(118 184 64 / .35), transparent 70%),
+    linear-gradient(180deg, #0C4A28, #05301A);
+  color: #E3EEDB;
+}
+.pv-hero-in { position: relative; width: min(1080px, 100%); margin: 0 auto; }
+.pv-eyebrow { margin: 0 0 12px; font-size: 14px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #B7E36A; }
+.pv-hero h1 { margin: 0; font-size: clamp(46px, 8vw, 84px); line-height: 1; font-weight: 700; letter-spacing: -.025em; color: #fff; }
+.pv-hero h1 em { font-family: "DM Serif Display", Georgia, serif; font-style: italic; font-weight: 400; color: #B7E36A; }
+.pv-date {
+  display: inline-block; margin: 22px 0 0; padding: 6px 14px; border-radius: 999px;
+  font-size: 14px; font-weight: 500; color: #E3EEDB;
+  background: rgb(255 255 255 / .08); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .18);
+}
+.pv-lead { max-width: 660px; margin: 22px 0 0; font-size: 19px; line-height: 1.6; color: rgb(227 238 219 / .88); }
+.pv-leaf { position: absolute; pointer-events: none; opacity: .9; }
+.pv-leaf-1 { width: 150px; right: 6%; top: 92px; rotate: -28deg; }
+.pv-leaf-2 { width: 96px; right: 19%; bottom: 52px; rotate: 34deg; opacity: .55; filter: blur(1.5px); }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-leaf { animation: pv-float 9s ease-in-out infinite alternate; }
+  .pv-leaf-2 { animation-duration: 7s; animation-delay: -3s; }
+  @keyframes pv-float { to { translate: 0 -14px; } }
+}
+
+/* em resumo: três cartões que sobem sobre a faixa */
+.pv-glance {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  width: min(1080px, 100% - 40px); margin: -64px auto 0; padding: 0; list-style: none;
+}
+.pv-glance li {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 24px 24px 22px; border-radius: 24px;
+  background: #fff; box-shadow: 0 14px 34px rgb(8 46 32 / .1), 0 2px 6px rgb(8 46 32 / .05);
+  font-size: 15.5px; line-height: 1.5; color: #4A5751;
+}
+.pv-glance strong { font-size: 18px; font-weight: 700; line-height: 1.3; color: #082E20; }
+.pv-ico { display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 8px; border-radius: 50%; background: #E6F2D8; }
+.pv-ico svg { width: 24px; height: 24px; fill: none; stroke: #17632D; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* corpo: índice + seções */
+.pv-body {
+  display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 48px; align-items: start;
+  width: min(1080px, 100% - 40px); margin: 64px auto 88px;
+}
+.pv-toc { position: sticky; top: 100px; }
+.pv-toc-title { margin: 0 0 12px 14px; font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #3F6B4F; }
+.pv-toc ol { margin: 0; padding: 0; list-style: none; }
+.pv-toc a {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 7px 14px; border-radius: 12px;
+  font-size: 15px; font-weight: 400; line-height: 1.35; color: #33413A; text-decoration: none;
+  transition: background-color .25s var(--ease), color .25s var(--ease);
+}
+.pv-toc a span { flex: none; width: 20px; font-size: 12.5px; font-weight: 600; color: #6E8A78; font-variant-numeric: tabular-nums; }
+.pv-toc a:hover { background: rgb(255 255 255 / .55); color: #082E20; }
+.pv-toc a[aria-current] { background: #fff; color: #082E20; font-weight: 600; box-shadow: 0 4px 14px rgb(8 46 32 / .07); }
+.pv-toc a[aria-current] span { color: var(--btn); }
+.pv-toc a:focus-visible { outline: 3px solid #082E20; outline-offset: 2px; }
+
+.pv-sections { display: flex; flex-direction: column; gap: 18px; }
+.pv-sec {
+  padding: 32px 36px 22px; border-radius: 28px;
+  background: rgb(255 255 255 / .72); border: 1px solid rgb(255 255 255 / .9);
+  box-shadow: 0 8px 26px rgb(8 46 32 / .05);
+}
+.pv-sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.pv-num {
+  flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--btn); color: #fff; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;
+  box-shadow: 0 6px 14px rgb(76 154 34 / .3);
+}
+.pv-sec h2 { margin: 0; font-size: 25px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; color: #082E20; }
+.pv-sec p { margin: 0 0 14px; }
+.pv-sec ul { margin: 0 0 14px; padding: 0; list-style: none; }
+.pv-sec li { position: relative; margin: 8px 0; padding-left: 26px; }
+.pv-sec li::before {
+  content: ""; position: absolute; left: 4px; top: .62em; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--btn); box-shadow: 0 0 0 4px #E6F2D8;
+}
+.pv-sec strong { color: #0B2118; font-weight: 600; }
+.pv-sec a:not(.pv-cta) { color: #17652B; text-underline-offset: 3px; }
+.pv-sec a:not(.pv-cta):hover { color: var(--btn); }
+
+/* contato: o cartão verde que fecha a página */
+.pv-contact { background: linear-gradient(160deg, #0F5530, #05301A); border-color: transparent; color: rgb(227 238 219 / .88); }
+.pv-contact h2 { color: #fff; }
+.pv-contact .pv-num { background: #B7E36A; color: #05301A; box-shadow: none; }
+.pv-contact a:not(.pv-cta) { color: #B7E36A; }
+.pv-contact a:not(.pv-cta):hover { color: #fff; }
+.pv-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 48px; margin: 6px 0 18px; padding: 0 24px; border-radius: 999px;
+  background: #B7E36A; color: #05301A; font-size: 16px; font-weight: 600; text-decoration: none;
+  transition: background-color .3s var(--ease), translate .3s var(--ease);
+}
+.pv-cta svg { width: 18px; height: 18px; transition: translate .3s var(--ease); }
+.pv-cta:hover { background: #fff; }
+.pv-cta:hover svg { translate: 3px 0; }
+.pv-cta:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.pv-addr { margin: 0 0 12px; padding-top: 16px; border-top: 1px solid rgb(255 255 255 / .14); font-size: 15px; color: rgb(227 238 219 / .7); }
+
+/* tablet e celular: índice vira um cartão no topo, sem ficar fixo */
+@media (max-width: 960px) {
+  .pv-glance { grid-template-columns: 1fr; gap: 12px; }
+  .pv-glance li { display: grid; grid-template-columns: 46px 1fr; column-gap: 16px; row-gap: 2px; padding: 20px; }
+  .pv-ico { grid-row: span 2; margin: 0; }
+  .pv-body { grid-template-columns: 1fr; gap: 18px; margin-top: 28px; }
+  .pv-toc { position: static; padding: 20px 16px 14px; border-radius: 24px; background: rgb(255 255 255 / .55); border: 1px solid rgb(255 255 255 / .8); }
+  .pv-toc ol { columns: 2 220px; column-gap: 8px; }
+  .pv-toc li { break-inside: avoid; }
+}
+@media (max-width: 600px) {
+  .pv-hero { padding: 120px 20px 96px; border-radius: 0 0 32px 32px; }
+  .pv-lead { font-size: 17px; }
+  .pv-leaf-1 { width: 96px; right: -14px; top: 96px; }
+  .pv-leaf-2 { display: none; }
+  .pv-glance { width: calc(100% - 32px); margin-top: -52px; }
+  .pv-body { width: calc(100% - 32px); }
+  .pv-sec { padding: 24px 20px 12px; border-radius: 22px; }
+  .pv-sec-head { gap: 12px; }
+  .pv-num { width: 38px; height: 38px; font-size: 14px; }
+  .pv-sec h2 { font-size: 22px; }
+  main.pv { font-size: 16.5px; }
+}
