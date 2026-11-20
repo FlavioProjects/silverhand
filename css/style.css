@@ -183,13 +183,13 @@ main {
 .hero-green {
   --hp: 0;
   transform-origin: 100% 0;
-  transform: translate3d(calc(var(--hp) * -1.5%), calc(var(--hp) * -5%), 0)
-             rotate(calc(var(--hp) * -1.5deg)) scale(calc(1 + var(--hp) * .035));
+  transform: translate3d(calc(var(--hp) * -3.5%), calc(var(--hp) * -12%), 0)
+             rotate(calc(var(--hp) * -4deg)) scale(calc(1 + var(--hp) * .09));
 }
 .hero-green.deco-l {
   transform-origin: 0 0;
-  transform: translate3d(calc(var(--hp) * -2%), calc(var(--hp) * -3%), 0)
-             rotate(calc(var(--hp) * 4deg)) scale(calc(1 + var(--hp) * .08));
+  transform: translate3d(calc(var(--hp) * -6%), calc(var(--hp) * -9%), 0)
+             rotate(calc(var(--hp) * 12deg)) scale(calc(1 + var(--hp) * .22));
 }
 @media (prefers-reduced-motion: reduce) { .hero-green, .hero-green.deco-l { transform: none; } }
 .hero-green-base { fill: none; } /* o fundo vem do <main> (tons em degradê) */
