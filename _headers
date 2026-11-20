@@ -57,3 +57,11 @@
   X-Robots-Tag: noindex
 /404.html
   X-Robots-Tag: noindex
+
+# arquivo de verificação do Google Search Console: precisa ficar no ar
+# (se apagar, o site deixa de ser verificado), mas não entra na busca.
+# O Cloudflare também serve ele sem o ".html", por isso as duas linhas.
+/googlebc655bf3e3f66053
+  X-Robots-Tag: noindex
+/googlebc655bf3e3f66053.html
+  X-Robots-Tag: noindex
