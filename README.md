@@ -12,21 +12,25 @@ Site estático (HTML, CSS e JS puros, sem build) publicado no **Cloudflare Pages
 | `css/style.css` | Estilos do site |
 | `css/legal.css` | Estilos das páginas de texto (privacy e 404) |
 | `js/main.js` | Menu, animações, galeria e validação do formulário |
+| `js/legal.js` | `privacy.html`: marca no índice lateral a seção que está sendo lida |
 | `img/hero/` | Folha flutuante da hero e das seções (um recorte repetido) |
 | `img/logo/` | Símbolo e logotipo (claro e escuro) |
-| `img/service-sections/` | Foto (recortada no formato da mancha) e folha de cada seção de serviço |
-| `img/seasons/`, `img/work/`, `img/final/` | Fotos das estações, da galeria e da seção final, em `desktop/`, `tablet/` e `mobile/` |
+| `img/service-sections/` | Foto de cada seção de serviço em vários tamanhos (`<serviço>-<largura>.webp`, escolhida pelo `srcset`; o formato da mancha vem do `clip-path`) e as folhas |
+| `img/work/` | Fotos da galeria "Our work" em vários tamanhos (`<foto>-<largura>.webp`, 16:9) |
+| `img/seasons/` | Fotos dos cartões de estação em vários tamanhos (`season-<estação>-<largura>.webp`, 16:9) |
+| `img/final/` | Mapa da área atendida, em `desktop/`, `tablet/` e `mobile/` |
 | `img/icons/` | Favicon PNG e ícones do Android (`site.webmanifest`) |
 | `img/og-logo.jpg` | Imagem de compartilhamento (1200×630) |
 | `fonts/` | DM Sans e DM Serif Display, servidas pelo próprio site (os `OFL-*.txt` são as licenças, obrigatórias junto das fontes) |
 | `favicon.ico`, `apple-touch-icon.png` | Ícones da aba e do iPhone (ficam na raiz de propósito) |
 | `robots.txt`, `sitemap.xml`, `llms.txt` | SEO (buscadores e ferramentas de IA) |
+| `googlebc655bf3e3f66053.html` | Verificação do Google Search Console. **Não apagar nem renomear**: o Google confere o arquivo de tempos em tempos e, se sumir, o site deixa de ser verificado |
 | `site.webmanifest` | Nome, cores e ícones quando o site é salvo na tela inicial |
 | `_headers` | Cabeçalhos HTTP do Cloudflare Pages (segurança e cache) |
 
 ## Ao mudar CSS ou JS: trocar a versão
 
-O navegador guarda `css/style.css`, `css/legal.css` e `js/main.js` por 1 dia
+O navegador guarda `css/style.css`, `css/legal.css`, `js/main.js` e `js/legal.js` por 1 dia
 (`_headers`). Para quem já visitou o site receber a versão nova na hora, esses
 arquivos são chamados com `?v=` e a data, nas três páginas. A cada mudança
 neles, trocar a versão de uma vez:
@@ -50,12 +54,14 @@ Depois abrir <http://localhost:8000>.
 
 | Onde | O quê |
 |---|---|
+| Títulos da home | O `<h1>` é o rótulo pequeno da hero ("Lawn care & landscaping in Silver Spring, MD") e cada serviço tem o nome dele como `<h2>` ("Lawn Care & Mowing"...). Os slogans grandes são `<p>` com as mesmas classes, então o visual não muda. Manter assim: é o que o Google lê como assunto da página |
 | `<head>` de cada página | `<title>` (até ~60 caracteres), `meta description` (até ~155), `robots`, canônico, Open Graph e Twitter |
-| `index.html`, JSON-LD | Site, página (cada seção com o link `#âncora` dela), empresa local, serviços e FAQ |
+| `index.html`, JSON-LD | Site, página (cada seção com o link `#âncora` dela), empresa local (com as fotos reais), serviços (cada um com foto e área atendida) e FAQ. Validar depois de mudar: um erro de vírgula derruba o bloco inteiro |
 | `privacy.html`, JSON-LD | Página e trilha (Home › Privacy Policy) |
 | `404.html` | `noindex` (também no `_headers`) |
 | `robots.txt` | Libera tudo e aponta para o sitemap |
 | `sitemap.xml` | Home (com as imagens) e privacy; atualizar `<lastmod>` quando mudar |
+| `googlebc655bf3e3f66053.html` | Prova de que o site é seu no Search Console (com `noindex` no `_headers`). Depois de verificado, enviar o sitemap lá: *Sitemaps* › `https://silverhandlandscaping.com/sitemap.xml` |
 | `llms.txt` | Resumo do site em texto para ferramentas de IA (ChatGPT, Claude, Perplexity); atualizar quando serviços, área ou FAQ mudarem |
 
 As respostas do FAQ no JSON-LD precisam ser iguais às da página. Para testar:

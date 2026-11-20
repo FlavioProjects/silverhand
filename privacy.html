@@ -61,10 +61,10 @@
 }
 </script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-variable.woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=20261114">
-<link rel="stylesheet" href="css/legal.css?v=20261114">
+<link rel="stylesheet" href="css/style.css?v=2026112004">
+<link rel="stylesheet" href="css/legal.css?v=20261120">
 </head>
-<body class="legal">
+<body class="legal legal-pv">
 
 <header class="legal-bar">
   <div class="legal-bar-in">
@@ -79,110 +79,128 @@
   </div>
 </header>
 
-<main class="legal-main">
-  <p class="legal-eyebrow">Legal</p>
-  <h1>Privacy <em>Policy.</em></h1>
-  <p class="legal-date">Effective date: November 1, 2026</p>
-
-  <p class="legal-lead">Silver Hand Home &amp; Landscaping (“Silver Hand,” “we,” “us”) provides lawn care, landscaping, power washing, car washing and home cleaning in Silver Spring and Montgomery County, Maryland. This policy explains what information we collect through this website and when you book a visit, how we use it, and the choices you have.</p>
-
-  <nav class="legal-toc" aria-label="On this page">
-    <ol>
-      <li><a href="#collect">Information we collect</a></li>
-      <li><a href="#use">How we use it</a></li>
-      <li><a href="#texts">Text messages</a></li>
-      <li><a href="#share">When we share it</a></li>
-      <li><a href="#cookies">Cookies and tracking</a></li>
-      <li><a href="#keep">How long we keep it</a></li>
-      <li><a href="#choices">Your choices</a></li>
-      <li><a href="#security">Security</a></li>
-      <li><a href="#children">Children</a></li>
-      <li><a href="#changes">Changes to this policy</a></li>
-      <li><a href="#contact">Contact us</a></li>
-    </ol>
-  </nav>
-
-  <section id="collect">
-    <h2>1. Information we collect</h2>
-    <p><strong>Information you give us.</strong> When you fill out the “Book a free visit” form, you share your name, phone number, property address and the service you are interested in. If you call, text or talk with us in person, we may also keep notes about your property and the work you ask for.</p>
-    <p><strong>Information collected automatically.</strong> Like most websites, the company that hosts this site may automatically record basic technical data when you visit, such as your IP address, browser type and the pages you open. This is used to keep the site running and secure.</p>
-    <p>We do not ask for payment card details, Social Security numbers or other sensitive information through this website.</p>
+<main class="pv">
+  <section class="pv-hero" aria-labelledby="pv-title">
+    <img class="pv-leaf pv-leaf-1" src="img/hero/leaf.svg" alt="" aria-hidden="true">
+    <img class="pv-leaf pv-leaf-2" src="img/hero/leaf.svg" alt="" aria-hidden="true">
+    <div class="pv-hero-in">
+      <p class="pv-eyebrow">Legal</p>
+      <h1 id="pv-title">Privacy <em>Policy.</em></h1>
+      <p class="pv-date">Effective date: November 1, 2026</p>
+      <p class="pv-lead">Silver Hand Home &amp; Landscaping (“Silver Hand,” “we,” “us”) provides lawn care, landscaping, power washing, car washing and home cleaning in Silver Spring and Montgomery County, Maryland. This policy explains what information we collect through this website and when you book a visit, how we use it, and the choices you have.</p>
+    </div>
   </section>
 
-  <section id="use">
-    <h2>2. How we use it</h2>
-    <ul>
-      <li>To contact you about your request and schedule a free visit.</li>
-      <li>To give you a quote and a plan for your property.</li>
-      <li>To provide the services you hire us for, including recurring visits.</li>
-      <li>To send reminders and updates, like a text before we arrive.</li>
-      <li>To answer your questions and keep records of the work we do.</li>
-      <li>To keep this website working and protect it from misuse.</li>
-    </ul>
-    <p>We do not sell your personal information, and we do not use it for targeted advertising.</p>
-  </section>
+  <ul class="pv-glance" role="list" aria-label="In short">
+    <li><span class="pv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.3 2.3 4.4-4.6"/></svg></span><strong>We never sell your information</strong><span>Your details are only used to quote, schedule and do the work on your property.</span></li>
+    <li><span class="pv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span><strong>No ad cookies or trackers</strong><span>No analytics, ad pixels or third-party fonts run on this website.</span></li>
+    <li><span class="pv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8.5A1.5 1.5 0 0 1 19 17H10l-4.5 3.5V17H5a1.5 1.5 0 0 1-1.5-1.5V7A1.5 1.5 0 0 1 5 5.5z"/><path d="M8 11.2h8"/></svg></span><strong>Texts you can stop anytime</strong><span>Reply STOP to end our messages, or HELP if you need help.</span></li>
+  </ul>
 
-  <section id="texts">
-    <h2>3. Text messages</h2>
-    <p>When you give us your phone number, you agree that we may call or text you about your request, your visits and your service. These are service messages, not marketing. Message and data rates may apply, and how often we text depends on your schedule.</p>
-    <p>You can stop text messages at any time by replying <strong>STOP</strong>, or ask for help by replying <strong>HELP</strong>. We do not share or sell your mobile number or your consent to receive texts with third parties for their marketing purposes.</p>
-  </section>
+  <div class="pv-body">
+    <nav class="pv-toc" aria-label="On this page">
+      <p class="pv-toc-title">On this page</p>
+      <ol>
+        <li><a href="#collect"><span aria-hidden="true">01</span>Information we collect</a></li>
+        <li><a href="#use"><span aria-hidden="true">02</span>How we use it</a></li>
+        <li><a href="#texts"><span aria-hidden="true">03</span>Text messages</a></li>
+        <li><a href="#share"><span aria-hidden="true">04</span>When we share it</a></li>
+        <li><a href="#cookies"><span aria-hidden="true">05</span>Cookies and tracking</a></li>
+        <li><a href="#keep"><span aria-hidden="true">06</span>How long we keep it</a></li>
+        <li><a href="#choices"><span aria-hidden="true">07</span>Your choices</a></li>
+        <li><a href="#security"><span aria-hidden="true">08</span>Security</a></li>
+        <li><a href="#children"><span aria-hidden="true">09</span>Children</a></li>
+        <li><a href="#changes"><span aria-hidden="true">10</span>Changes to this policy</a></li>
+        <li><a href="#contact"><span aria-hidden="true">11</span>Contact us</a></li>
+      </ol>
+    </nav>
 
-  <section id="share">
-    <h2>4. When we share it</h2>
-    <p>We only share your information when it is needed to serve you or required by law:</p>
-    <ul>
-      <li><strong>Service providers</strong> that help us run the business, such as website hosting, messaging and scheduling tools. They may use your information only to provide those services to us.</li>
-      <li><strong>Legal reasons</strong>, when required by law, a court order or to protect the rights and safety of our customers, our crew or the public.</li>
-      <li><strong>Business changes</strong>, if Silver Hand is sold or merged; the new owner would have to respect this policy.</li>
-    </ul>
-  </section>
+    <div class="pv-sections">
+      <section id="collect" class="pv-sec" aria-labelledby="collect-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">01</span><h2 id="collect-h">Information we collect</h2></div>
+        <p><strong>Information you give us.</strong> When you fill out the “Book a free visit” form, you share your name, phone number, property address and the service you are interested in. If you call, text or talk with us in person, we may also keep notes about your property and the work you ask for.</p>
+        <p><strong>Information collected automatically.</strong> Like most websites, the company that hosts this site may automatically record basic technical data when you visit, such as your IP address, browser type and the pages you open. This is used to keep the site running and secure.</p>
+        <p>We do not ask for payment card details, Social Security numbers or other sensitive information through this website.</p>
+      </section>
 
-  <section id="cookies">
-    <h2>5. Cookies and tracking</h2>
-    <p>This website does not use advertising cookies, analytics trackers or social media pixels. Our fonts are served from our own website, not from a third party. The map in the “Local service” section opens Google Maps only if you click it; from that point, Google’s own privacy policy applies.</p>
-    <p>If we add analytics or similar tools in the future, we will update this policy first.</p>
-  </section>
+      <section id="use" class="pv-sec" aria-labelledby="use-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">02</span><h2 id="use-h">How we use it</h2></div>
+        <ul>
+          <li>To contact you about your request and schedule a free visit.</li>
+          <li>To give you a quote and a plan for your property.</li>
+          <li>To provide the services you hire us for, including recurring visits.</li>
+          <li>To send reminders and updates, like a text before we arrive.</li>
+          <li>To answer your questions and keep records of the work we do.</li>
+          <li>To keep this website working and protect it from misuse.</li>
+        </ul>
+        <p>We do not sell your personal information, and we do not use it for targeted advertising.</p>
+      </section>
 
-  <section id="keep">
-    <h2>6. How long we keep it</h2>
-    <p>We keep your information for as long as we need it to respond to you, provide our services and keep reasonable business and tax records. If you never become a customer, we delete your request when it is no longer useful. You can ask us to delete it sooner (see below).</p>
-  </section>
+      <section id="texts" class="pv-sec" aria-labelledby="texts-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">03</span><h2 id="texts-h">Text messages</h2></div>
+        <p>When you give us your phone number, you agree that we may call or text you about your request, your visits and your service. These are service messages, not marketing. Message and data rates may apply, and how often we text depends on your schedule.</p>
+        <p>You can stop text messages at any time by replying <strong>STOP</strong>, or ask for help by replying <strong>HELP</strong>. We do not share or sell your mobile number or your consent to receive texts with third parties for their marketing purposes.</p>
+      </section>
 
-  <section id="choices">
-    <h2>7. Your choices</h2>
-    <p>You can ask us at any time to:</p>
-    <ul>
-      <li>tell you what information we have about you;</li>
-      <li>correct information that is wrong or out of date;</li>
-      <li>delete your information, unless we must keep it by law;</li>
-      <li>stop calling or texting you.</li>
-    </ul>
-    <p>Depending on where you live, including Maryland, state law may give you additional privacy rights. We will honor any request we are required to, and we will not treat you differently for making one.</p>
-  </section>
+      <section id="share" class="pv-sec" aria-labelledby="share-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">04</span><h2 id="share-h">When we share it</h2></div>
+        <p>We only share your information when it is needed to serve you or required by law:</p>
+        <ul>
+          <li><strong>Service providers</strong> that help us run the business, such as website hosting, messaging and scheduling tools. They may use your information only to provide those services to us.</li>
+          <li><strong>Legal reasons</strong>, when required by law, a court order or to protect the rights and safety of our customers, our crew or the public.</li>
+          <li><strong>Business changes</strong>, if Silver Hand is sold or merged; the new owner would have to respect this policy.</li>
+        </ul>
+      </section>
 
-  <section id="security">
-    <h2>8. Security</h2>
-    <p>We use reasonable measures to protect your information and limit who can see it. No website or online service is completely secure, so we cannot guarantee absolute security, but we take it seriously and only collect what we need.</p>
-  </section>
+      <section id="cookies" class="pv-sec" aria-labelledby="cookies-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">05</span><h2 id="cookies-h">Cookies and tracking</h2></div>
+        <p>This website does not use advertising cookies, analytics trackers or social media pixels. Our fonts are served from our own website, not from a third party. The map in the “Local service” section opens Google Maps only if you click it; from that point, Google’s own privacy policy applies.</p>
+        <p>If we add analytics or similar tools in the future, we will update this policy first.</p>
+      </section>
 
-  <section id="children">
-    <h2>9. Children</h2>
-    <p>This website is meant for adults arranging services for their homes. We do not knowingly collect information from children under 13. If you believe a child has sent us information, contact us and we will delete it.</p>
-  </section>
+      <section id="keep" class="pv-sec" aria-labelledby="keep-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">06</span><h2 id="keep-h">How long we keep it</h2></div>
+        <p>We keep your information for as long as we need it to respond to you, provide our services and keep reasonable business and tax records. If you never become a customer, we delete your request when it is no longer useful. You can ask us to delete it sooner (see below).</p>
+      </section>
 
-  <section id="changes">
-    <h2>10. Changes to this policy</h2>
-    <p>We may update this policy from time to time. When we do, we will change the effective date at the top of this page. Important changes will be easy to spot here before they take effect.</p>
-  </section>
+      <section id="choices" class="pv-sec" aria-labelledby="choices-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">07</span><h2 id="choices-h">Your choices</h2></div>
+        <p>You can ask us at any time to:</p>
+        <ul>
+          <li>tell you what information we have about you;</li>
+          <li>correct information that is wrong or out of date;</li>
+          <li>delete your information, unless we must keep it by law;</li>
+          <li>stop calling or texting you.</li>
+        </ul>
+        <p>Depending on where you live, including Maryland, state law may give you additional privacy rights. We will honor any request we are required to, and we will not treat you differently for making one.</p>
+      </section>
 
-  <section id="contact">
-    <h2>11. Contact us</h2>
-    <!-- Quando o cliente tiver e-mail e telefone definitivos, acrescentar aqui
-         (ex.: <a href="mailto:...">...</a> e <a href="tel:...">...</a>). -->
-    <p>For any question or request about your privacy, reach us through the <a href="index.html#book">form on our website</a> or reply to any text message we have sent you.</p>
-    <p class="legal-addr">Silver Hand Home &amp; Landscaping<br>Silver Spring, Maryland</p>
-  </section>
+      <section id="security" class="pv-sec" aria-labelledby="security-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">08</span><h2 id="security-h">Security</h2></div>
+        <p>We use reasonable measures to protect your information and limit who can see it. No website or online service is completely secure, so we cannot guarantee absolute security, but we take it seriously and only collect what we need.</p>
+      </section>
+
+      <section id="children" class="pv-sec" aria-labelledby="children-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">09</span><h2 id="children-h">Children</h2></div>
+        <p>This website is meant for adults arranging services for their homes. We do not knowingly collect information from children under 13. If you believe a child has sent us information, contact us and we will delete it.</p>
+      </section>
+
+      <section id="changes" class="pv-sec" aria-labelledby="changes-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">10</span><h2 id="changes-h">Changes to this policy</h2></div>
+        <p>We may update this policy from time to time. When we do, we will change the effective date at the top of this page. Important changes will be easy to spot here before they take effect.</p>
+      </section>
+
+      <section id="contact" class="pv-sec pv-contact" aria-labelledby="contact-h">
+        <div class="pv-sec-head"><span class="pv-num" aria-hidden="true">11</span><h2 id="contact-h">Contact us</h2></div>
+        <!-- Quando o cliente tiver e-mail e telefone definitivos, acrescentar aqui
+             (ex.: <a href="mailto:...">...</a> e <a href="tel:...">...</a>). -->
+        <p>For any question or request about your privacy, reach us through the <a href="index.html#book">form on our website</a> or reply to any text message we have sent you.</p>
+        <a class="pv-cta" href="index.html#book">Send a request <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <p class="pv-addr">Silver Hand Home &amp; Landscaping<br>Silver Spring, Maryland</p>
+      </section>
+
+    </div>
+  </div>
 </main>
 
 <footer class="legal-foot">
@@ -190,6 +208,7 @@
   <a class="legal-credit" href="https://wesleygomes.site/" target="_blank" rel="noopener">Made by Wesley Gomes</a>
   <a href="index.html">Home</a>
 </footer>
+<script src="js/legal.js?v=20261120" defer></script>
 <script>document.getElementById('legal-year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

@@ -92,7 +92,7 @@ html {
 
 /* Títulos: DM Sans bold + uma palavra-chave em DM Serif Display
    itálico, no verde das folhas (--leaf-dark), o mesmo em todos os títulos. */
-:is(h1, h2) em {
+:is(h1, h2, .hero-title, .svx-title) em { /* o slogan da hero e dos serviços é <p> (o título de verdade é o rótulo acima) */
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
@@ -501,7 +501,7 @@ html { scroll-padding-top: 96px; } /* âncoras param abaixo da navbar flutuante 
     --hdy: 75;
     --brand-x: 92; --brand-y: 72; --brand-w: 378;
     --copy-x: 100;
-    --loc-y: 256;  --loc-fs: 26;
+    --loc-y: 256;  --loc-fs: 23.5; /* rótulo-h1 mais longo: cabe na largura do celular */
     --h1-y: 306;   --h1-fs: 81;  --h1-lh: 80;
     --desc-y: 495; --desc-fs: 42.6; --desc-lh: 48;
     --photo-x: 125; --photo-y: 700; --photo-w: 690;  /* menor e mais baixo: não encosta no texto */
@@ -981,17 +981,26 @@ html { scroll-padding-top: 96px; } /* âncoras param abaixo da navbar flutuante 
 /* Desktop: a foto e a mancha crescem com a tela. O palco para de crescer em
    ~1420 px e fica centralizado, mas a arte é presa à borda da tela; então ela
    ganha uma parte da sobra lateral (--ox) em vez de ficar pequena em telas
-   largas. --ua é a unidade da arte (a --u dela): 2% maior que a do palco +
-   90% da sobra lateral espalhada pela largura da mancha (~410 un.). */
+   largas. --ua é a unidade da arte (a --u dela): 88% da do palco + 55% da
+   sobra lateral espalhada pela largura da mancha (~410 un.). Balão menor
+   que antes para a foto não ser esticada além da resolução dela.
+   O texto acompanha a mancha: fica a ~70 un. da borda dela (a mancha vai até
+   ~410 un. da borda da tela; o texto tem ~230 un. de largura). */
 @media (orientation: landscape) {
   .svx-stage {
-    --ua: calc(var(--u) * 1.02 + var(--ox) * .9 / 410);
+    --ua: calc(var(--u) * .88 + var(--ox) * .55 / 410);
+    --art-in: calc(410 * var(--ua) - var(--ox)); /* quanto a mancha entra no palco */
     min-height: calc(var(--ch) * var(--ua));
   }
   .svx-art { --u: var(--ua); width: calc(724 * var(--ua)); height: calc(var(--ch) * var(--ua)); }
   .svx-r .svx-art { left: auto; right: calc(-1 * var(--ox)); }
-  .svx-l .svx-stage { padding-left: calc(446 * var(--u)); }
-  .svx-r .svx-stage { padding-right: calc(432 * var(--u)); }
+  .svx-l .svx-stage { padding-left: calc(var(--art-in) + 70 * var(--u)); }
+  /* à direita a mancha entra um pouco mais (~434 un.) */
+  .svx-r .svx-stage {
+    --art-in: calc(434 * var(--ua) - var(--ox));
+    padding-right: calc(var(--art-in) + 70 * var(--u));
+    padding-left: max(49 * var(--u), 724 * var(--u) - var(--art-in) - 300 * var(--u));
+  }
 }
 
 /* ---------- Seasonal Care ----------
@@ -1419,7 +1428,7 @@ select.fin-field:valid { color: #0B2118; }
    por --ox) e esmaece nas pontas; a faixa começa uma cópia à esquerda das
    posições originais e anda exatamente uma cópia (--set, em px de canvas). */
 .cmb-stage > .cmb-carousel {
-  --set: calc(3 * (var(--pw) + var(--pg)));
+  --set: calc(4 * (var(--pw) + var(--pg))); /* 4 fotos por cópia */
   --pad: 40;
   left: calc(-1 * var(--ox)); width: 100cqw;
   top: calc((var(--y) - var(--pad)) * var(--u));
@@ -1510,7 +1519,7 @@ select.fin-field:valid { color: #0B2118; }
   .cmb-stage .cmb-p-h { --x: 133; --y: 980; --fs: 59; --lh: 62; }
   .cmb-stage .cmb-b-h { --y: 527; --w: 1000; --fs: 59; --lh: 64; }
   .cmb-stage .cmb-b-body { --y: 667; --w: 760; --fs: 26; --lh: 34; }
-  .cmb-stage .cmb-carousel { --x0: 132; --y: 112; --pw: 460; --pg: 17; --h: 266; --dur: 36s; }
+  .cmb-stage .cmb-carousel { --x0: 132; --y: 112; --pw: 460; --pg: 17; --h: 266; --dur: 48s; }
   .cmb-stage .cmb-div1 { --y: 435; --x0: 0; --x1: 1672; --cx: 836; }
   .cmb-stage .cmb-div2 { --y: 931; --x0: 0; --x1: 1672; --cx: 836; }
   .cmb-stage .cmb-item:nth-of-type(1) { --cx: 425; --cy: 820; --lx: 490; --ly: 791; --lw: 250; --lfs: 23; --llh: 29; --ta: left; }
@@ -1531,7 +1540,7 @@ select.fin-field:valid { color: #0B2118; }
   .cmb-stage .cmb-p-h { --x: 101; --y: 1164; --fs: 53.3; --lh: 56; }
   .cmb-stage .cmb-b-h { --y: 644; --w: 960; --fs: 46; --lh: 54; }
   .cmb-stage .cmb-b-body { --y: 768; --w: 780; --fs: 26; --lh: 34; }
-  .cmb-stage .cmb-carousel { --x0: 39; --y: 209; --pw: 325; --pg: 18; --h: 294; --dur: 30s; }
+  .cmb-stage .cmb-carousel { --x0: 39; --y: 209; --pw: 325; --pg: 18; --h: 294; --dur: 40s; }
   .cmb-stage .cmb-div1 { --y: 548; --x0: 24; --x1: 1062; --cx: 543; }
   .cmb-stage .cmb-div2 { --y: 1072; --x0: 24; --x1: 1062; --cx: 543; }
   .cmb-stage .cmb-item:nth-of-type(1) { --cx: 293; --cy: 913; --lx: 183; --ly: 972; --lw: 220; --lfs: 22; --llh: 28; --ta: center; }
@@ -1553,7 +1562,7 @@ select.fin-field:valid { color: #0B2118; }
   .cmb-stage .cmb-p-h { --x: 60; --y: 1435; --fs: 60; --lh: 66; }
   .cmb-stage .cmb-b-h { --x: 60; --y: 672; --w: 820; --fs: 63; --lh: 70; }
   .cmb-stage .cmb-b-body { --x: 60; --y: 902; --w: 820; --fs: 37; --lh: 50; }
-  .cmb-stage .cmb-carousel { --x0: 38; --y: 255; --pw: 280; --pg: 13; --h: 265; --dur: 26s; }
+  .cmb-stage .cmb-carousel { --x0: 38; --y: 255; --pw: 280; --pg: 13; --h: 265; --dur: 35s; }
   .cmb-stage .cmb-div1 { --y: 570; --x0: 24; --x1: 917; --cx: 470; }
   .cmb-stage .cmb-div2 { --y: 1345; --x0: 24; --x1: 917; --cx: 470; }
   .cmb-stage .cmb-item:nth-of-type(1) { --cx: 170; --cy: 1125; --lx: 25; --ly: 1197; --lw: 290; --lfs: 34; --llh: 42; --ta: center; }
