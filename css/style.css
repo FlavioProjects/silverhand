@@ -981,17 +981,26 @@ html { scroll-padding-top: 96px; } /* âncoras param abaixo da navbar flutuante 
 /* Desktop: a foto e a mancha crescem com a tela. O palco para de crescer em
    ~1420 px e fica centralizado, mas a arte é presa à borda da tela; então ela
    ganha uma parte da sobra lateral (--ox) em vez de ficar pequena em telas
-   largas. --ua é a unidade da arte (a --u dela): 2% maior que a do palco +
-   90% da sobra lateral espalhada pela largura da mancha (~410 un.). */
+   largas. --ua é a unidade da arte (a --u dela): 88% da do palco + 55% da
+   sobra lateral espalhada pela largura da mancha (~410 un.). Balão menor
+   que antes para a foto não ser esticada além da resolução dela.
+   O texto acompanha a mancha: fica a ~70 un. da borda dela (a mancha vai até
+   ~410 un. da borda da tela; o texto tem ~230 un. de largura). */
 @media (orientation: landscape) {
   .svx-stage {
-    --ua: calc(var(--u) * 1.02 + var(--ox) * .9 / 410);
+    --ua: calc(var(--u) * .88 + var(--ox) * .55 / 410);
+    --art-in: calc(410 * var(--ua) - var(--ox)); /* quanto a mancha entra no palco */
     min-height: calc(var(--ch) * var(--ua));
   }
   .svx-art { --u: var(--ua); width: calc(724 * var(--ua)); height: calc(var(--ch) * var(--ua)); }
   .svx-r .svx-art { left: auto; right: calc(-1 * var(--ox)); }
-  .svx-l .svx-stage { padding-left: calc(446 * var(--u)); }
-  .svx-r .svx-stage { padding-right: calc(432 * var(--u)); }
+  .svx-l .svx-stage { padding-left: calc(var(--art-in) + 70 * var(--u)); }
+  /* à direita a mancha entra um pouco mais (~434 un.) */
+  .svx-r .svx-stage {
+    --art-in: calc(434 * var(--ua) - var(--ox));
+    padding-right: calc(var(--art-in) + 70 * var(--u));
+    padding-left: max(49 * var(--u), 724 * var(--u) - var(--art-in) - 300 * var(--u));
+  }
 }
 
 /* ---------- Seasonal Care ----------
