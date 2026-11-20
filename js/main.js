@@ -490,7 +490,7 @@
     clone.style.cssText += ';position:absolute;inset:auto;overflow:visible;pointer-events:none;' +
       'left:' + pct(box.left - pb.left + l, pb.width) + ';top:' + pct(box.top - pb.top + t, pb.height) +
       ';width:' + pct(rr - l, pb.width) + ';height:' + pct(bb - t, pb.height) + ';' +
-      'z-index:' + getComputedStyle(svg).zIndex + ';will-change:opacity,transform';
+      'z-index:' + getComputedStyle(svg).zIndex + ';will-change:opacity,transform;transform:none';
     var defs = svg.querySelector('defs'); if (defs) clone.appendChild(defs.cloneNode(true));
     var host = clone;
     if (p.parentNode !== svg) { host = p.parentNode.cloneNode(false); clone.appendChild(host); }
@@ -654,4 +654,35 @@
   window.addEventListener('scroll', kick, { passive: true });
   window.addEventListener('resize', reset);
   window.addEventListener('load', reset);   /* fotos e fontes podem mudar a altura dos palcos */
+})();
+
+/* Manchas da hero com o scroll: --hp vai de 0 (topo) a 1 (hero saindo da
+   tela) e desliza até o alvo, então a rodinha do mouse não dá trancos. O
+   movimento em si está no style.css (.hero-green). */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var hero = document.querySelector('.hero');
+  var svgs = [].slice.call(document.querySelectorAll('.hero-green'));
+  if (!hero || !svgs.length) return;
+  var cur = 0, target = 0, last = 0, running = false;
+  function measure() {
+    var h = hero.offsetHeight || window.innerHeight;
+    target = Math.max(0, Math.min(1, window.scrollY / h));
+  }
+  function paint() { svgs.forEach(function (s) { s.style.setProperty('--hp', cur.toFixed(4)); }); }
+  function frame(now) {
+    var dt = Math.min(64, now - (last || now)); last = now;
+    var d = target - cur;
+    if (Math.abs(d) < .0005) { cur = target; paint(); running = false; last = 0; return; }
+    cur += d * (1 - Math.exp(-dt / 180));   /* ~180 ms de folga: bem macio */
+    paint();
+    requestAnimationFrame(frame);
+  }
+  function kick() {
+    measure();
+    if (!running && target !== cur) { running = true; requestAnimationFrame(frame); }
+  }
+  measure(); cur = target; paint();
+  window.addEventListener('scroll', kick, { passive: true });
+  window.addEventListener('resize', kick);
 })();
