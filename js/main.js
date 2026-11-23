@@ -63,8 +63,9 @@
     /* seções vigiadas: as dos links da barra e o agendar (o #contact do
        menu do celular fica de fora: o rodapé está atrás do FAQ no palco) */
     var ids = [], seen = {};
+    function target(a) { return a === cta ? '#book' : a.getAttribute('href'); }
     [].slice.call(nav.querySelectorAll('a')).concat(cta ? [cta] : []).forEach(function (a) {
-      var id = (a.getAttribute('href') || '').slice(1);
+      var id = (target(a) || '').slice(1);
       if (id && !seen[id] && document.getElementById(id)) { seen[id] = 1; ids.push(id); }
     });
 
@@ -89,7 +90,7 @@
       if (id === current) return;
       current = id;
       links.concat(cta ? [cta] : []).forEach(function (a) {
-        var on = a.getAttribute('href') === '#' + id;
+        var on = target(a) === '#' + id;
         a.classList.toggle('is-active', on);
         if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
       });
@@ -199,8 +200,16 @@
         firstBad.focus();
         return;
       }
+      /* envia pelo WhatsApp: abre a conversa com os dados já preenchidos */
+      var opt = select.options[select.selectedIndex];
+      var msg = 'Hi Silver Hand! I would like to book a free visit.\n\n' +
+        'Name: ' + form.elements.name.value.trim() + '\n' +
+        'Phone: ' + form.elements.phone.value.trim() + '\n' +
+        'Property address: ' + form.elements.address.value.trim() + '\n' +
+        'Service: ' + (opt ? opt.textContent.trim() : '');
+      window.open('https://wa.me/13015260855?text=' + encodeURIComponent(msg), '_blank', 'noopener');
       status.className = 'fin-status';
-      status.textContent = 'Thanks, ' + form.elements.name.value.trim().split(' ')[0] + '! We will text you to set up the visit.';
+      status.textContent = 'Thanks, ' + form.elements.name.value.trim().split(' ')[0] + '! Send the WhatsApp message and we will set up the visit.';
       form.reset();
     });
     form.addEventListener('input', function (e) { e.target.removeAttribute('aria-invalid'); });
