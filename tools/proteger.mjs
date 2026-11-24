@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* Gera a versão protegida do site NO PRÓPRIO DIRETÓRIO (sobrescreve).
-   Rodar sempre sobre os arquivos LEGÍVEIS (branch main), nunca duas vezes.
+   Rodar sempre sobre os arquivos LEGÍVEIS (ver README, 'Proteção do código'), nunca duas vezes.
      cd tools && npm install && node proteger.mjs
    - js/main.js, js/legal.js: ofuscados (nomes, strings e fluxo embaralhados)
    - js/guard.js: gerado a partir de tools/guard.src.js (bloqueios + anti-DevTools)
@@ -22,7 +22,7 @@ const p = (f) => resolve(root, f);
 const marker = '/*sh-protected*/';
 for (const f of ['js/main.js', 'js/legal.js']) {
   if (readFileSync(p(f), 'utf8').startsWith(marker)) {
-    console.error(`${f} já está protegido. Rode sobre os arquivos legíveis (branch main).`);
+    console.error(`${f} já está protegido. Recupere os arquivos legíveis (ver README, 'Proteção do código').`);
     process.exit(1);
   }
 }
@@ -36,11 +36,11 @@ const base = {
   splitStrings: true, splitStringsChunkLength: 8,
   transformObjectKeys: true, unicodeEscapeSequence: false, selfDefending: true,
 };
-const siteOpts = { ...base, controlFlowFlattening: true, controlFlowFlatteningThreshold: 0.4,
-  deadCodeInjection: true, deadCodeInjectionThreshold: 0.2 };
+// sem controlFlowFlattening/deadCode no código do site: pesam no carregamento e nas animações
+const siteOpts = { ...base, controlFlowFlattening: false, deadCodeInjection: false };
 const guardOpts = { ...base, stringArrayEncoding: ['rc4'], controlFlowFlattening: true,
-  controlFlowFlatteningThreshold: 0.75, deadCodeInjection: true, deadCodeInjectionThreshold: 0.4,
-  debugProtection: true, debugProtectionInterval: 2000 };
+  controlFlowFlatteningThreshold: 0.5, deadCodeInjection: false };
+// (sem debugProtection: o guard.src.js já faz a checagem do DevTools, e o loop extra gastava CPU)
 
 const obf = (src, o) => marker + JsObfuscator.obfuscate(src.replace(/\bdebugger\s*;/g, ''), o).getObfuscatedCode();
 for (const f of ['js/main.js', 'js/legal.js']) writeFileSync(p(f), obf(readFileSync(p(f), 'utf8'), siteOpts));
@@ -58,7 +58,7 @@ for (const f of ['index.html', 'privacy.html', '404.html']) {
   let html = readFileSync(p(f), 'utf8');
   html = html.replace(/(\.(?:css|js))\?v=\d+/g, `$1?v=${ver}`);
   const guardSrc = f === '404.html' ? '/js/guard.js' : 'js/guard.js';
-  html = html.replace('</head>', `<script src="${guardSrc}?v=${ver}"></script>\n</head>`);
+  html = html.replace('</head>', `<script src="${guardSrc}?v=${ver}" defer></script>\n</head>`);
   html = await minify(html, {
     removeComments: true, collapseWhitespace: true, conservativeCollapse: true,
     minifyJS: false, minifyCSS: false, processScripts: [], keepClosingSlash: true,

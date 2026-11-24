@@ -42,9 +42,9 @@ sed -i -E 's/\?v=[0-9]+/?v=AAAAMMDD/g' index.html privacy.html 404.html
 (com a data do dia no lugar de `AAAAMMDD`; se mudar duas vezes no mesmo dia,
 acrescentar um número, ex. `2026111402`).
 
-## Proteção do código (esta branch)
+## Proteção do código
 
-Nesta branch os arquivos publicados estão **ofuscados**: `js/main.js` e `js/legal.js`
+Os arquivos publicados estão **ofuscados**: `js/main.js` e `js/legal.js`
 embaralhados (nomes, textos e fluxo), CSS minificado sem comentários, HTML sem
 comentários e com espaços colapsados, e `js/guard.js` (bloqueia botão direito,
 seleção/cópia fora dos campos do formulário, Ctrl+U/S/P, F12 e Ctrl+Shift+I/J/C,
@@ -52,8 +52,14 @@ esconde a página ao imprimir e cobre a tela enquanto o DevTools estiver aberto)
 Os `<script>` inline e o JSON-LD não mudam, então os hashes da CSP no `_headers`
 e o SEO continuam valendo.
 
-**Não editar os arquivos ofuscados.** Fazer as mudanças nos arquivos legíveis
-(branch `main`) e gerar a versão protegida de novo, uma única vez:
+**Não editar os arquivos ofuscados.** A última versão legível é o commit
+`f3f28f5`. Para mudar algo: recuperar os arquivos legíveis, editar, e gerar a
+versão protegida de novo (uma única vez; o script recusa rodar sobre arquivos já
+protegidos):
+
+```bash
+git checkout f3f28f5 -- index.html privacy.html 404.html css/style.css css/legal.css js/main.js js/legal.js
+```
 
 ```bash
 cd tools && npm install && node proteger.mjs
