@@ -1,0 +1,3 @@
+# Cloudflare Pages: a pasta tools/ (gerador da versão protegida) não é servida.
+/tools/* /404 404
+/tools /404 404
